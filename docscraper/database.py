@@ -18,9 +18,9 @@ class Doctors(BaseModel):
     doctor_id = TextField()
     field_of_work = TextField()
     address = TextField()
-    phone = TextField()
+    phone = TextField(null=True)
     email = TextField(null=True)
-    office_type = TextField()
+    office_type = TextField(null=True)
     fax = TextField(null=True)
     website = TextField(null=True)
     office_type = TextField(null=True)
@@ -30,7 +30,7 @@ class Doctors(BaseModel):
 
 class Licenses(BaseModel):
     license_id = AutoField()
-    license_type = TextField()
+    license_type = TextField(null=True)
 
 class Doctors_Licenses(BaseModel):
     doctor_id = ForeignKeyField(Doctors, related_name='doctor_id')
