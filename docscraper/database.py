@@ -30,7 +30,7 @@ class Doctors(BaseModel):
 
 class Licenses(BaseModel):
     license_id = AutoField()
-    license_type = TextField()
+    license_type = TextField(null=True)
 
 class Doctors_Licenses(BaseModel):
     doctor_id = ForeignKeyField(Doctors, related_name='doctor_id')
