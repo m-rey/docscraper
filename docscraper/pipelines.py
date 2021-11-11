@@ -29,18 +29,7 @@ class SqlitePipeline:
     def process_item(self, item, spider):
         # todo: add additonal fields to database, when scraping is actually implemented
         # todo: deduplication
-        database.Doctors(
-            name=item["name"],
-            profile_url=item["profile_url"],
-            doctor_id=item["doctor_id"],
-            field_of_work=item["field_of_work"],
-            address=item["address"],
-            phone=item["phone"],
-            email=item["email"],
-            fax=item["fax"],
-            website=item["website"],
-            office_type=item["office_type"],
-        ).save()
+        database.Doctors.insert(dict(item)).execute()
         # todo: actually scrape license types and pray this works
         for license_type in item["license_type"]:
             database.Licenses(
