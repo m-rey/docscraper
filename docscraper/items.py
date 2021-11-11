@@ -18,3 +18,5 @@ class KvbItem(scrapy.Item):
     website = scrapy.Field()
     office_type = scrapy.Field()
     distance = scrapy.Field()
+    lanr = scrapy.Field()
+    bsnr = scrapy.Field()

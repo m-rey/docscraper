@@ -85,6 +85,32 @@ class KvbSpider(scrapy.Spider):
                 .get(default="")
                 .strip()
             )
+            item["lanr"] = (
+                result
+                .css(
+                    ".bsnr_lanr span.zusatzinfo_titel:contains('LANR:') ~ span.zusatzinfo_text::text"
+                )
+                .get(default="")
+                .strip()
+            )
+            item["bsnr"] = (
+                result
+                .css(
+                    ".bsnr_lanr span.zusatzinfo_titel:contains('BSNR:') ~ span.zusatzinfo_text::text"
+                )
+                .get(default="")
+                .strip()
+            )
+            # TODO
+            # consultation hours (Sprechzeiten)
+            # opening hours (Offene Sprechzeiten)
+            # availability by phone
+            # additional title (Zusatzbezeichnungen)
+            # doctor type
+            # specialisation type
+            # licenses
+            # note
+            # languages
 
             yield item
 
