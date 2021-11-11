@@ -10,7 +10,7 @@ class BaseModel(Model):
         database = db
 
 
-# todo add null=True to all fields, that could be empty
+# todo add null=True to all fields that could be empty
 class Doctors(BaseModel):
     id = AutoField()
     name = TextField()
@@ -29,9 +29,12 @@ class Doctors(BaseModel):
 
 
 class Licenses(BaseModel):
-    id = ForeignKeyField(Doctors, backref="licenses")
+    license_id = AutoField()
     license_type = TextField()
 
+class Doctors_Licenses(BaseModel):
+    doctor_id = ForeignKeyField(Doctors, related_name='doctor_id')
+    license_id = ForeignKeyField(Licenses, related_name='license_id')
 
 def setup_database():
     db.connect()
