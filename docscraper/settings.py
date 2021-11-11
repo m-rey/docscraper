@@ -64,8 +64,8 @@ TELNETCONSOLE_ENABLED = False
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 # ITEM_PIPELINES = {
-    # 'docscraper.pipelines.DocscraperPipeline': 300,
-    # "docscraper.pipelines.DuplicatesPipeline": 300,
+# 'docscraper.pipelines.DocscraperPipeline': 300,
+# "docscraper.pipelines.DuplicatesPipeline": 300,
 # }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

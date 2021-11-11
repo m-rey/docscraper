@@ -10,7 +10,6 @@ from scrapy.exceptions import DropItem
 
 
 class DocscraperPipeline:
-
     def process_item(self, item, spider):
         return item
 
