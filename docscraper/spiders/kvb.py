@@ -86,7 +86,7 @@ class KvbSpider(scrapy.Spider):
                 .strip()
             )
             item["lanr"] = (
-                results[0]
+                result
                 .css(
                     ".bsnr_lanr span.zusatzinfo_titel:contains('LANR:') ~ span.zusatzinfo_text::text"
                 )
@@ -94,7 +94,7 @@ class KvbSpider(scrapy.Spider):
                 .strip()
             )
             item["bsnr"] = (
-                results[0]
+                result
                 .css(
                     ".bsnr_lanr span.zusatzinfo_titel:contains('BSNR:') ~ span.zusatzinfo_text::text"
                 )
