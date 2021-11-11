@@ -1,7 +1,14 @@
 import scrapy
+import os
 
 from docscraper.items import KvbItem
 from scrapy.exceptions import CloseSpider
+from dotenv import load_dotenv
+
+
+load_dotenv()
+LANDKREISE = os.getenv("LANDKREISE").split(";")
+GENEHMIGUNGEN = os.getenv("GENEHMIGUNGEN").split(";")
 
 
 class KvbSpider(scrapy.Spider):
@@ -10,16 +17,9 @@ class KvbSpider(scrapy.Spider):
 
     def start_requests(self):
 
-        # for other configs, search on https://dienste.kvb.de/arztsuche/app/erweiterteSuche.htm
-        # and look for outgoing POST requests.
-        # Try to use 'landkreise' to filter results. Don't use 'adresse' for filtering, as it doesn't filter results.
-        # Instead, 'adresse' affects the sort order and shows nearby results first.
         search_query = {
-            "genehmigungen": (
-                "Verhaltenstherapie Erwachsene",
-                "Verhaltenstherapie Erwachsene, Gruppe",
-            ),
-            "landkreise": "09564000",  # id of Landkreis Nürnberg
+            "genehmigungen": GENEHMIGUNGEN,
+            "landkreise": LANDKREISE,
         }
 
         return [
