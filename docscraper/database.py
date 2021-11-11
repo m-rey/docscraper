@@ -18,7 +18,7 @@ class Doctors(BaseModel):
     doctor_id = TextField()
     field_of_work = TextField()
     address = TextField()
-    phone = TextField()
+    phone = TextField(null=True)
     email = TextField(null=True)
     office_type = TextField()
     fax = TextField(null=True)
