@@ -9,7 +9,7 @@ import scrapy
 class KvbItem(scrapy.Item):
     name = scrapy.Field()
     profile_url = scrapy.Field()
-    doctor_id = scrapy.Field()
+    doc_nr = scrapy.Field()
     field_of_work = scrapy.Field()
     address = scrapy.Field()
     phone = scrapy.Field()

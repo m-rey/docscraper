@@ -18,8 +18,7 @@ class KvbSpider(scrapy.Spider):
     def start_requests(self):
 
         search_query = {
-            "genehmigungen": GENEHMIGUNGEN,
-            "landkreise": LANDKREISE,
+            "bezirksstellen": ["1", "2", "3", "4", "5", "6", "7", "8"],
         }
 
         return [
@@ -32,7 +31,7 @@ class KvbSpider(scrapy.Spider):
 
     def add_params(self, response):
         # override the default total result limit of 100 and prevent loading useless google maps in search results
-        url = response.url + "&zeigeKarte=false&resultCount=10000"
+        url = response.url + "&zeigeKarte=false&resultCount=100000"
         return scrapy.Request(url, callback=self.parse)
 
     def parse(self, response):
@@ -53,7 +52,7 @@ class KvbSpider(scrapy.Spider):
                 .strip()
             )
             # profile_url ends with 'arztCode=<id>'
-            item["doctor_id"] = item["profile_url"].split("=")[-1]
+            item["doc_nr"] = item["profile_url"].split("=")[-1]
             item["field_of_work"] = (
                 result.css(".fachgebiet_zelle::text").get(default="").strip()
             )
@@ -86,16 +85,14 @@ class KvbSpider(scrapy.Spider):
                 .strip()
             )
             item["lanr"] = (
-                result
-                .css(
+                result.css(
                     ".bsnr_lanr span.zusatzinfo_titel:contains('LANR:') ~ span.zusatzinfo_text::text"
                 )
                 .get(default="")
                 .strip()
             )
             item["bsnr"] = (
-                result
-                .css(
+                result.css(
                     ".bsnr_lanr span.zusatzinfo_titel:contains('BSNR:') ~ span.zusatzinfo_text::text"
                 )
                 .get(default="")
@@ -120,9 +117,7 @@ class KvbSpider(scrapy.Spider):
         # go to next page and parse it, if there is one
         if response.xpath(xpath_next_page):
             yield scrapy.FormRequest.from_response(
-                response,
-                formxpath=xpath_next_page,
-                callback=self.parse,
+                response, formxpath=xpath_next_page, callback=self.parse,
             )
         else:
             raise CloseSpider("No more search results")

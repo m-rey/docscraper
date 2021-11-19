@@ -1,6 +1,14 @@
-from peewee import AutoField, TextField, ForeignKeyField, SqliteDatabase, Model, DateTimeField
+from peewee import (
+    AutoField,
+    SQL,
+    TextField,
+    ForeignKeyField,
+    SqliteDatabase,
+    Model,
+    DateTimeField,
+    CompositeKey,
+)
 import datetime
-
 
 db = SqliteDatabase("docscraper.db")
 
@@ -11,11 +19,11 @@ class BaseModel(Model):
 
 
 # todo add null=True to all fields that could be empty
-class Doctors(BaseModel):
-    id = AutoField()
+class Doctor(BaseModel):
+    id = AutoField(primary_key=True)
     name = TextField()
     profile_url = TextField()
-    doctor_id = TextField(null=True)
+    doc_nr = TextField(null=True)
     field_of_work = TextField()
     address = TextField()
     phone = TextField(null=True)
@@ -26,20 +34,42 @@ class Doctors(BaseModel):
     lanr = TextField(null=True)
     bsnr = TextField(null=True)
     office_type = TextField(null=True)
-    first_scraped = DateTimeField(default=datetime.datetime.now)
-    last_scraped = DateTimeField(default=datetime.datetime.now)
+
+    class Meta:
+        constraints = [
+            SQL(
+                "UNIQUE (id, name, profile_url, doc_nr, field_of_work, address, phone, email, office_type, fax, website, lanr, bsnr, office_type)"
+            )
+        ]
 
 
-class Licenses(BaseModel):
-    license_id = AutoField()
-    license_type = TextField(null=True)
+class Scrape(BaseModel):
+    id = AutoField(primary_key=True)
+    query = TextField()
+    timestamp = DateTimeField(default=datetime.datetime.now)
 
-class Doctors_Licenses(BaseModel):
-    doctor_id = ForeignKeyField(Doctors, related_name='doctor_id')
-    license_id = ForeignKeyField(Licenses, related_name='license_id')
+
+class Scrape_Doctor(BaseModel):
+    id_scrape = ForeignKeyField(Scrape, related_name="id")
+    id_doctor = ForeignKeyField(Doctor, related_name="id")
+
+    class Meta:
+        database = db
+        db_table = "scrape_doctor"
+        primary_key = CompositeKey("id_scrape", "id_doctor")
+
+
+class License(BaseModel):
+    title = TextField()
+    id = AutoField(primary_key=True)
+    id_scrape_scrape_doctor = ForeignKeyField(Scrape_Doctor, related_name="id_scrape")
+    id_doctor_scrape_doctor = ForeignKeyField(Scrape_Doctor, related_name="id_doctor")
+
 
 def setup_database():
     db.connect()
-    db.create_tables([Doctors, Licenses, Doctors_Licenses])
+    db.create_tables([Doctor, Scrape, Scrape_Doctor, License])
     db.close()
 
+
+setup_database()
