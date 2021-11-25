@@ -1,10 +1,12 @@
 import datetime
-from sqlalchemy import create_engine, Column, Integer, String, ForeignKey
+from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, event
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.sql.sqltypes import DateTime
 from sqlalchemy.orm import sessionmaker, relationship
 
-engine = create_engine("sqlite:///docscraper.db", echo=True)
+engine = create_engine(
+    "sqlite:///docscraper.db", echo=True
+)  # echo=True for debugging only
 Session = sessionmaker(bind=engine)
 session = Session()
 Base = declarative_base()
@@ -27,7 +29,7 @@ class Doctor(Base):
     lanr = Column(String)
     bsnr = Column(String)
     office_type = Column(String)
-    
+    scrape_doctor = relationship("scrape_doctor") # I am not sure, what this is for tbh.
 
     def __repr__(self):
         return (
@@ -55,9 +57,10 @@ class Scrape(Base):
 
     id = Column(
         Integer, primary_key=True
-    )  # autoincrement is not recommended for sqlite and not needed. Remember to set it when switching the database engine.
+    )  # autoincrement is not recommended for sqlite and not needed. Remember to set it when switching to another database engine.
     query = Column(String)
     timestamp = Column(DateTime, default=datetime.datetime.now)
+    scrape_doctor = relationship("scrape_doctor")
 
     def __repr__(self):
         return "<Scrape(query='%s', timestamp='%s')>" % (self.query, self.timestamp)
@@ -67,7 +70,10 @@ class Scrape_Doctor(Base):
     __tablename__ = "scrape_doctor"
 
     id_scrape = Column(Integer, ForeignKey("scrape.id"), primary_key=True)
-    id_doctor = Column(Integer, ForeignKey("id_doctor"), primary_key=True)
+    id_doctor = Column(Integer, ForeignKey("doctor.id"), primary_key=True)
+    doctor = relationship("doctor", backref="scrape_doctor")
+    scrape = relationship("scrape", backref="scrape_doctor")
+    license = relationship("license", backref="scrape_doctor")
 
     def __repr__(self):
         return "<Scrape_Doctor(id_scrape='%s', id_doctor='%s')>" % (
@@ -76,17 +82,15 @@ class Scrape_Doctor(Base):
         )
 
 
-# there is the possibly to define a relationship between classes, but I don't know what the benefit is.
-
-
 class License(Base):
     __tablename__ = "license"
 
     title = Column(String)
     id = Column(Integer, primary_key=True)
-    id_scrape_scrape_doctor = Column(Integer, ForeignKey("scrape_doctor.scrape.id"))
+    id_scrape_scrape_doctor = Column(Integer, ForeignKey("scrape_doctor.id_scrape"))
     id_doctor_scrape_doctor = Column(Integer, ForeignKey("scrape_doctor.id_doctor"))
-    # these are awful variable names.
+    # these are some confusing variable names.
+    scrape_doctor = relationship("scrape_doctor")
 
     def __repr__(self):
         return (
@@ -98,6 +102,14 @@ class License(Base):
                 self.id_doctor_scrape_doctor,
             )
         )
+
+
+# set PRAGMA foreign_keys = ON before every connection to the database.
+@event.listens_for(engine, "connect")
+def set_sqlite_pragma(dbapi_connection, connection_record):
+    cursor = dbapi_connection.cursor()
+    cursor.execute("PRAGMA foreign_keys=ON")
+    cursor.close()
 
 
 if __name__ == "__main__":
