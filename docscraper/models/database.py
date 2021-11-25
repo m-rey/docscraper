@@ -47,7 +47,7 @@ class Doctor(Base):
                 self.fax,
                 self.website,
                 self.lanr,
-                self.bsnr
+                self.bsnr,
             )
         )
 
