@@ -18,21 +18,28 @@ class SqlitePipeline:
         database.setup_database()
 
     def open_spider(self, spider):
-        database.db.connect("docscraper.db")
-        database.db.create_tables(
-            [database.Doctors, database.Licenses, database.Doctors_Licenses]
-        )
+        pass
 
     def close_spider(self, spider):
-        database.db.close()
+        database.session.commit()
 
     def process_item(self, item, spider):
-        # todo: add additonal fields to database, when scraping is actually implemented
         # todo: deduplication
-        database.Doctors.insert(dict(item)).execute()
-        # todo: actually scrape license types and pray this works
-        # for license_type in item["license_type"]:
-        # database.Licenses(
-        # license_type=license_type, doctor_id=item["doctor_id"],
-        # ).save()
+        doctor = database.Doctor(
+            name=item["name"],
+            profile_url=item["profile_url"],
+            doc_nr=item["doc_nr"],
+            field_of_work=item["field_of_work"],
+            address=item["address"],
+            phone=item["phone"],
+            email=item["email"],
+            office_type=item["office_type"],
+            fax=item["fax"],
+            website=item["website"],
+            lanr=item["lanr"],
+            bsnr=item["bsnr"],
+        )
+        database.session.add(doctor)
+        database.session.flush()  # unsure if this is better done here or in close_spider()
+
         return item

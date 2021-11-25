@@ -28,8 +28,9 @@ class Doctor(Base):
     website = Column(String)
     lanr = Column(String)
     bsnr = Column(String)
-    office_type = Column(String)
-    scrape_doctor = relationship("scrape_doctor") # I am not sure, what this is for tbh.
+    scrape_doctor = relationship(
+        "scrape_doctor"
+    )  # I am not sure, what this is for tbh.
 
     def __repr__(self):
         return (
@@ -46,8 +47,7 @@ class Doctor(Base):
                 self.fax,
                 self.website,
                 self.lanr,
-                self.bsnr,
-                self.office_type,
+                self.bsnr
             )
         )
 
@@ -89,7 +89,7 @@ class License(Base):
     id = Column(Integer, primary_key=True)
     id_scrape_scrape_doctor = Column(Integer, ForeignKey("scrape_doctor.id_scrape"))
     id_doctor_scrape_doctor = Column(Integer, ForeignKey("scrape_doctor.id_doctor"))
-    # these are some confusing variable names.
+    # these are some confusing column names.
     scrape_doctor = relationship("scrape_doctor")
 
     def __repr__(self):
@@ -112,5 +112,10 @@ def set_sqlite_pragma(dbapi_connection, connection_record):
     cursor.close()
 
 
-if __name__ == "__main__":
+def setup_database():
     Base.metadata.create_all(engine)
+
+
+# only for debugging purposes.
+if __name__ == "__main__":
+    setup_database()
