@@ -7,7 +7,7 @@
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
 from scrapy.exceptions import DropItem
-import docscraper.database as database
+import docscraper.models.database as database
 
 
 class DocscraperPipeline:
