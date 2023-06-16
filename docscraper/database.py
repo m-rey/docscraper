@@ -1,4 +1,4 @@
-from peewee import *
+from peewee import AutoField, TextField, ForeignKeyField, SqliteDatabase, Model, DateTimeField
 import datetime
 
 
