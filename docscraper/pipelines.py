@@ -29,8 +29,8 @@ class SqlitePipeline:
         # todo: deduplication
         database.Doctors.insert(dict(item)).execute()
         # todo: actually scrape license types and pray this works
-        for license_type in item["license_type"]:
-            database.Licenses(
-                license_type=license_type, doctor_id=item["doctor_id"],
-            ).save()
+        #for license_type in item["license_type"]:
+            #database.Licenses(
+                #license_type=license_type, doctor_id=item["doctor_id"],
+            #).save()
         return item
