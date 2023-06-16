@@ -24,7 +24,6 @@ class Doctors(BaseModel):
     fax = TextField(null=True)
     website = TextField(null=True)
     office_type = TextField(null=True)
-    distance = TextField(null=True, default=None)
     first_scraped = DateTimeField(default=datetime.datetime.now)
     last_scraped = DateTimeField(default=datetime.datetime.now)
 
