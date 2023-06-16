@@ -1,6 +1,6 @@
 # docscraper
 
-1. Install python-dotenv, peewee and scrapy with pip or conda
+1. Install requirements.txt with pip or conda
 
 2. create an .env file in the root of this repository from the following example:
 ```
