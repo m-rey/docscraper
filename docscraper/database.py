@@ -21,6 +21,8 @@ class Doctors(BaseModel):
     office_type = TextField()
     fax = TextField(null=True)
     website = TextField(null=True)
+    office_type = TextField(null=True)
+    distance = TextField(null=True)
     first_scraped = DateTimeField(default=datetime.datetime.now)
     last_scraped = DateTimeField(default=datetime.datetime.now)
 
@@ -34,6 +36,9 @@ def setup_database():
     db.create_tables([Doctors, Licenses])
     db.close()
 
+def insert_item(item):
+    db.create_tables([Doctors, Licenses])
+    item.save()
 
 # run as main to setup database
 # this is obviously bad UX, but it's just for testing

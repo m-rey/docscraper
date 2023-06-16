@@ -7,12 +7,22 @@
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
 from scrapy.exceptions import DropItem
+import docscraper.database as database
+import sqlite3
 
 
 class DocscraperPipeline:
 
     def process_item(self, item, spider):
         return item
+
+class SqlitePipeline:
+    def __init__(self):
+        database.setup_database()
+
+    def process_item(self, item, spider):
+        database.Doctors.insert(item)
+
 
 
 class DuplicatesPipeline:
