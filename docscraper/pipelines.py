@@ -21,7 +21,7 @@ class SqlitePipeline:
 
     def open_spider(self, spider):
         database.db.connect("docscraper.db")
-        database.db.create_tables([database.Doctors, database.Licenses])
+        database.db.create_tables([database.Doctors, database.Licenses, database.Doctors_Licenses])
 
     def close_spider(self, spider):
         database.db.close()
@@ -36,17 +36,3 @@ class SqlitePipeline:
                 license_type=license_type, doctor_id=item["doctor_id"],
             ).save()
         return item
-
-
-# unfinished and most likely not compatible with sqlite ??
-class DuplicatesPipeline:
-    def __init__(self):
-        self.ids_seen = set()
-
-    def process_item(self, item, spider):
-        adapter = ItemAdapter(item)
-        if adapter["id"] in self.ids_seen:
-            raise DropItem(f"Duplicate item found: {item!r}")
-        else:
-            self.ids_seen.add(adapter["id"])
-            return item

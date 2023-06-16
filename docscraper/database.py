@@ -38,6 +38,6 @@ class Doctors_Licenses(BaseModel):
 
 def setup_database():
     db.connect()
-    db.create_tables([Doctors, Licenses])
+    db.create_tables([Doctors, Licenses, Doctors_Licenses])
     db.close()
 
