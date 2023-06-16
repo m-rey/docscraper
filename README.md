@@ -1,5 +1,7 @@
 # docscraper
 
+NOTE: this is very much WIP. Use at your own risk!
+
 1. Install requirements.txt with pip or conda
 
 2. create an .env file in the root of this repository from the following example:
