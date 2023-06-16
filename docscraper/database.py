@@ -39,8 +39,3 @@ def setup_database():
     db.create_tables([Doctors, Licenses])
     db.close()
 
-
-# run as main to setup database
-# this is obviously bad UX, but it's just for testing
-if __name__ == "__main__":
-    setup_database()
