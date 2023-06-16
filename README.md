@@ -1,6 +1,8 @@
 # docscraper
 
-NOTE: this is very much WIP. Use at your own risk!
+NOTE: this is very much WIP. Use at your own risk! More Info can also be found here: https://gist.github.com/m-rey/ceedd31ed4f1d84bbd3d9ebef6d4ec41
+
+
 
 1. Install requirements.txt with pip or conda
 
