@@ -8,6 +8,7 @@ class BaseModel(Model):
     class Meta:
         database = db
 
+# todo add null=True to all fields, that could be empty
 class Doctors(BaseModel):
     id = AutoField()
     name = TextField()
@@ -16,10 +17,12 @@ class Doctors(BaseModel):
     field_of_work = TextField()
     address = TextField()
     phone = TextField()
-    email = TextField()
+    email = TextField(null=True)
     office_type = TextField()
-    fax = TextField()
-    website = TextField()
+    fax = TextField(null=True)
+    website = TextField(null=True)
+    first_scraped = DateTimeField(default=datetime.datetime.now)
+    last_scraped = DateTimeField(default=datetime.datetime.now)
 
 class Licenses(BaseModel):
     id = ForeignKeyField(Doctors, backref='licenses')
