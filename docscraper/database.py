@@ -20,7 +20,7 @@ class Doctors(BaseModel):
     address = TextField()
     phone = TextField(null=True)
     email = TextField(null=True)
-    office_type = TextField()
+    office_type = TextField(null=True)
     fax = TextField(null=True)
     website = TextField(null=True)
     office_type = TextField(null=True)
