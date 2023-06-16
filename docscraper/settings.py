@@ -64,7 +64,7 @@ TELNETCONSOLE_ENABLED = False
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    'docscraper.pipelines.SqlitePipeline': 300,
+    "docscraper.pipelines.SqlitePipeline": 300,
     # "docscraper.pipelines.DuplicatesPipeline": 300,
 }
 
